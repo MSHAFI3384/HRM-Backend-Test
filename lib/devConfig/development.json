@@ -1,0 +1,15 @@
+{
+    "secretKey": "epitomeBerry",
+    "messages": {
+        "errors": {
+            "userNotFound": "User not found",
+            "incorrectPassword": "Email or password is incorrect",
+            "missingParameters": "Required parameters is missing",
+            "invalidSource": "Invalid Source",
+            "invalidStage": "Invalid Stage"
+        }
+    },
+    "googleSheets": {
+        "leadsAd": "1wQCAkiBt680Syao870AY9bxmnXe9HziMIxyvRX0Pcjc"
+    }
+}
