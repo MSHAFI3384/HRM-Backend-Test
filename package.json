@@ -1,0 +1,40 @@
+{
+  "name": "epitomebackend",
+  "version": "1.0.0",
+  "description": "Backend server for epitome CRM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec node_modules/.bin/babel-node src/index.js",
+    "start": "npm run build && node ./build/index.js",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build --copy-files ./src -s",
+    "build": "npm run clean && npm run build-babel",
+    "pm2-start": "pm2 start npm --name \"epitome\" -- start"
+  },
+  "author": "Webdura Tech",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.15.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cron": "^1.8.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "google-spreadsheet": "^3.1.15",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.13.6",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12"
+  }
+}
