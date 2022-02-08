@@ -1,56 +1,39 @@
 import models from '../../models'
-import { omit } from 'lodash'
+import { omit, reject } from 'lodash'
 import APIError from '../../utilities/APIError'
 import { MISSING_PARAMETER } from '../../utilities/handleError'
 
-export const processCsv = data => new Promise((resolve,reject)=>{
+export const processCsv = data => new Promise(async (resolve,reject)=>{
 
     if(!data) throw new APIError(MISSING_PARAMETER)
     if(!data.body.csvArray) throw new APIError(MISSING_PARAMETER)
-    if(!data.body.csvReferenceArray) throw new APIError(MISSING_PARAMETER)
+    // if(!data.body.csvReferenceArray) throw new APIError(MISSING_PARAMETER)
 
-    let csvArray = data.body.csvArray
-    let csvReferenceArray = data.body.csvReferenceArray
+    let {csvArray} = data.body
+    console.log(csvArray)
+    // let csvReferenceArray = data.body.csvReferenceArray
 
     try{
-        let finalArray = []
-        let leadObject = {}
         
-        // let objectTypes =['location','status','designation','source']
-        let objectTypes =[
-            {name:'location',modelName:'Location'},
-            {name:'status',modelName:'Status'},
-            {name:'designation', modelName:'Designation'},
-            {name:'source',modelName:'Source'},
-        ]
-        csvArray.map((item,index)=>{
-            csvReferenceArray.map((bItem,bIndex)=>{
-                if(bItem.name === 'location' || bItem.name==='designation' || bItem.name==='source' || bItem.name==='status'){
-                    let modelName = bItem.name === 'location' ? 'Location' :
-                        bItem.name === 'source' ? 'Source' : 
-                        bItem.name === 'designation' ? 'Designation' :
-                        bItem.name === 'status' ? 'Status' : null
-
-                    models[modelName].findOne({name:item[bItem.value.csvFieldId]},(err,result)=>{
-                        console.log(result);
-                        leadObject[bItem.name] = (result?._id ? result._id : "")
-                    })
-                        
-                    // .exec((err,result)=>{
-                    //     console.log(result);
-                    //     leadObject[bItem.name] = result?._id ? result._id : ""
-                    //     })
+        await Promise.all(
+            csvArray.map((item,index)=>{
+                if(item.location){
+                    let result = models.Location.findOne({name:item.location}).select('_id');
+                    // item.location=_id
+                    console.log('||||||||',result)
                 }
-                else{
-                    leadObject[bItem.name] = bItem.value ? item[bItem.value.csvFieldId] : ""
-                }
-
             })
-            console.log(leadObject)
-            finalArray.push(leadObject)
-            leadObject={}
-        })
-        // finalArray.splice(0,1);
+        )
+
+        // csvArray.map((item,index)=>{
+        //     if(item.location){
+        //         let result = models.Location.findOne({name:item.location}).select('_id');
+        //         // item.location=_id
+        //         console.log('||||||||',result)
+        //     }
+        // })
+        
+        console.log(csvArray);
 
         // models.Lead.insertMany(finalArray,{ordered:true})
         // .then(data => {
@@ -71,6 +54,19 @@ export const processCsv = data => new Promise((resolve,reject)=>{
 
 
 })
+
+// export const processModel = (itemName,modelName,value) => new Promise((resolve,reject)=>{
+//     let dataToReturn = {}
+//     models[modelName].findOne({name:value})
+//     .then(result1=>{
+//         // dataToReturn[itemName]=result1._id ? result1._id : null
+//         // console.log(result1,dataToReturn)
+//         resolve(result1._id ? result1._id : null)
+//     })
+//     .catch(err=>{
+//         reject(err);
+//     })
+// })
 
 export const leadtest = abc => new Promise((resolve, reject) => {
    
