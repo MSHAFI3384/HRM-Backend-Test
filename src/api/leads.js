@@ -2,12 +2,25 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import { verifyToken } from '../utilities/auth'
-import { addLeadService, listAllLeadsService, leadsDetailsService, editExistingLead, leadsDetailsServiceByDynamicPopulate, leadtest } from '../services/lead/leads'
+import { addLeadService, listAllLeadsService, leadsDetailsService, editExistingLead, leadsDetailsServiceByDynamicPopulate, leadtest, processCsv } from '../services/lead/leads'
 import { handle_server_error } from '../utilities/handleError'
 import { checkPaginationOrCount } from '../hooks/query'
 import { apiCreateMultipleActivity } from '../controllers/ActivityController'
 
 const router = express.Router()
+
+router.post('/addCsv',async (req,res)=>{
+    try{
+        const result = await processCsv(req)
+        res.status(200).json(result)
+    }
+    catch(err){
+        // console.log("xyz",err);
+        let error = handle_server_error(err,req)
+        // console.log('abc',error);
+        res.status(error.code).json(error)
+    }
+})
 
 router.post(['/test'], async (req, res) => {
     try {
@@ -39,7 +52,7 @@ router.post('/details', verifyToken, async (req, res) => {
         await leadsDetailsService(req.body)
             .then(async (response) => {
                 let lead = response._doc;
-                let keyCheck = ['stage', 'status', 'presaleExecutive', 'salesExecutive', 'nextContactAction'];
+                let keyCheck = ['source','location','designation','status'];
                 let keysToBePopulated = [];
                 keyCheck.forEach((element, index, array) => {
                     Object.keys(lead).forEach(key => {

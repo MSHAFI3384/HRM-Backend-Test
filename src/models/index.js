@@ -16,6 +16,8 @@ import ProjectType from './ProjectType'
 import ProjectStatus from './ProjectStatus'
 import Project from './Project'
 import Activity from './Activity'
+import InterviewAction from './InterviewAction'
+import InterviewScore from './InterviewScore'
 import Designation from './Designation'
 
 export default {
@@ -37,5 +39,7 @@ export default {
     ProjectStatus,
     Project,
     Activity,
-    Designation
+    Designation,
+    InterviewAction,
+    InterviewScore,
 }

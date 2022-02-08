@@ -2,10 +2,9 @@ import mongoose, { Schema } from 'mongoose'
 
 
 const leadSchema = new Schema({
-    application_id: {
-        type: String,
-        required: true,
-    },
+    // application_id: {
+    //     type: String,
+    // },
     first_name: {
         type: String,
         required: true,
@@ -22,21 +21,11 @@ const leadSchema = new Schema({
         type: String,
         required: true,
     },
-    contact_owner: String,
-    secondary_owners: String,
-    is_assigned: String,
-    status: {
-        type: Schema.Types.ObjectId,
-        ref: 'Status',
-        required: true
-    },
     alternate_email: {
         type: String,
-        required: true,
-    },
+     },
     alternate_phone: {
         type: String,
-        required: true,
     },
     designation: {
         type: Schema.Types.ObjectId,
@@ -48,6 +37,30 @@ const leadSchema = new Schema({
         ref: 'Location',
         required: true
     },
+    source: {
+        type:Schema.Types.ObjectId,
+        ref:'Source',
+        required:true,
+    },
+    status: {
+        type: Schema.Types.ObjectId,
+        ref: 'Status',
+        // required: true
+    },
+    interview_action:{
+        type:Schema.Types.ObjectId,
+        ref:'InterviewAction'
+    },
+    interview_score:{
+        type:Schema.Types.ObjectId,
+        ref:'InterviewScore'
+    },
+    contact_owner: {
+        type:Schema.Types.ObjectId,
+        ref:'User',
+    },
+    secondary_owners: String,
+    is_assigned: String,
     linkedin_profile: String,
     current_company: String,
     current_experience: String,
@@ -59,7 +72,6 @@ const leadSchema = new Schema({
     technical_knowledge: Array,
     change_reason: String,
     language_level: String,
-    source: String
 }, { timestamps: true })
 
 

@@ -37,16 +37,16 @@ export const registerUser = data => new Promise(async (resolve, reject) => {
         if (!data) {
             throw new APIError(MISSING_PARAMETER)
         }
-        let alreadyUser = await models.User.findOne({ $or: [{ email: data.email }, { phone: data.phone }] })
+        let alreadyUser = await models.User.findOne({ $or: [{ email: data.email }, { phone: data.phone_number }] })
         if (alreadyUser) {
             throw new APIError(USER_ALREADY_EXIST)
         }
         let salt = await bcrypt.genSalt(10);
         let hash = await bcrypt.hash(data.password, salt);
         const authData = {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            phone: data.phone,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone_number: data.phone_number,
             email: data.email,
             location: data.location,
             status: data.status,
@@ -64,7 +64,7 @@ export const registerUser = data => new Promise(async (resolve, reject) => {
 export const getUsersList = (query) => new Promise((resolve, reject) => {
     try {
         const updatedQueries = omit(query, ['token'])
-        let users = models.User.find(updatedQueries)
+        let users = models.User.find(updatedQueries).populate(['location'])
         resolve(users)
     } catch (error) {
         reject(error)

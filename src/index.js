@@ -2,7 +2,7 @@ import logger from './logger';
 import app from './app';
 import packages from '../package.json';
 
-const PORT = 3000
+const PORT = 4000
 
 app.get("/", (req, res) => { return res.json({ description: "Epitome API", version: packages.version }); });
 

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 
-const sourceSchema = new Schema({
+const interviewscoreSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -13,4 +13,4 @@ const sourceSchema = new Schema({
     }
 }, { timestamps: true })
 
-export default mongoose.model('Source', sourceSchema, 'source')
+export default mongoose.model('InterviewScore', interviewscoreSchema, 'interviewscore')

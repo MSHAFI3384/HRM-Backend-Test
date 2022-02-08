@@ -2,11 +2,11 @@ import mongoose, { Schema } from 'mongoose'
 
 
 const userSchema = new Schema({
-    firstName: {
+    first_name: {
         type: String,
         required: true,
     },
-    lastName: {
+    last_name: {
         type: String,
         required: true,
     },
@@ -23,8 +23,13 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    phone_number: {
+        type: String,
+        required: true
+    },
     location: {
-        type: Array,
+        type:Schema.Types.ObjectId,
+        ref:'Location'
     },
     createdBy: {
         type: String,
@@ -32,17 +37,11 @@ const userSchema = new Schema({
     updatedBy: {
         type: String,
     },
-    phone: {
-        type: String,
-        required: true
-    },
     status: {
         type: String,
         enum: ['active', 'deactivated'],
         default: 'active'
     },
-    preSaleMangerId: String,
-    salesManagerId: String,
     profileImage: {
         type: String,
     }

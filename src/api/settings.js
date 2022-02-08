@@ -123,6 +123,20 @@ import {
     listAllDesignationService
 } from '../services/settings/designation'
 
+import {
+    addInterviewScoreService,
+    editInterviewScoreService,
+    deleteInterviewScoreService,
+    listAllInterviewScoreService
+} from '../services/settings/interviewscore'
+
+import {
+    addInterviewActionService,
+    editInterviewActionService,
+    deleteInterviewActionService,
+    listAllInterviewActionService
+} from '../services/settings/interviewaction'
+
 import { verifyToken } from '../utilities/auth'
 import { handle_server_error, SUCCESS } from '../utilities/handleError'
 
@@ -212,6 +226,87 @@ router.post(['/designation/', '/designation/list'], verifyToken, async (req, res
     }
 })
 
+router.post('/interviewscore/add', verifyToken, async (req, res) => {
+    try {
+        const newInterviewScore = await addInterviewScoreService(req.body)
+        res.status(200).send(newInterviewScore)
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.post('/interviewscore/edit', verifyToken, async (req, res) => {
+    try {
+        const updatedInterviewScore = await editInterviewScoreService(req.body)
+        res.status(200).send(updatedInterviewScore)
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.delete('/interviewscore/delete/:id', verifyToken, async (req, res) => {
+    try {
+        const removedInterviewScore = await deleteInterviewScoreService(req.params.id)
+        res.status(204).send()
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+
+router.post(['/interviewscore/', '/interviewscore/list'], verifyToken, async (req, res) => {
+    try {
+        const allInterviewScores = await listAllInterviewScoreService()
+        res.status(200).send(allInterviewScores)
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.post('/interviewaction/add', verifyToken, async (req, res) => {
+    try {
+        const newInterviewAction = await addInterviewActionService(req.body)
+        res.status(200).send(newInterviewAction)
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.post('/interviewaction/edit', verifyToken, async (req, res) => {
+    try {
+        const updatedInterviewAction = await editInterviewActionService(req.body)
+        res.status(200).send(updatedInterviewAction)
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.delete('/interviewaction/delete/:id', verifyToken, async (req, res) => {
+    try {
+        const removedInterviewAction = await deleteInterviewActionService(req.params.id)
+        res.status(204).send()
+    } catch (err) {
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
+router.post(['/interviewaction/', '/interviewaction/list'], verifyToken, async (req, res) => {
+    try {
+        const allInterviewActions = await listAllInterviewActionService()
+        res.status(200).send(allInterviewActions)
+    } catch (err) { 
+        let error = await handle_server_error(err, req)
+        res.status(error.code).send(error)
+    }
+})
+
 router.post('/source/add', verifyToken, async (req, res) => {
     try {
         const newSource = await addSourceService(req.body)
@@ -253,6 +348,7 @@ router.post('/source/list', verifyToken, async (req, res) => {
         res.status(error.code).send(error)
     }
 })
+
 
 
 router.post('/campaign/add', verifyToken, async (req, res) => {
