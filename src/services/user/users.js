@@ -64,7 +64,7 @@ export const registerUser = data => new Promise(async (resolve, reject) => {
 export const getUsersList = (query) => new Promise((resolve, reject) => {
     try {
         const updatedQueries = omit(query, ['token'])
-        let users = models.User.find(updatedQueries).populate(['location'])
+        let users = models.User.find(updatedQueries).populate(['location']).select('-password')
         resolve(users)
     } catch (error) {
         reject(error)

@@ -17,7 +17,7 @@ router.post('/addCsv',async (req,res)=>{
     }
     catch(err){
         // console.log("xyz",err);
-        let error = handle_server_error(err,req)
+        let error = await handle_server_error(err,req)
         // console.log('abc',error);
         res.status(error.code).json(error)
     }

@@ -12,7 +12,7 @@ module.exports = class Activity{
           res.status(500).json({error: error})
        }
 
-   }
+      }
 
    static async apiGetAllActivitys(req, res, next){
       try {

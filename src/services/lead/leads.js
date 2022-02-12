@@ -3,51 +3,56 @@ import { omit, reject } from 'lodash'
 import APIError from '../../utilities/APIError'
 import { MISSING_PARAMETER } from '../../utilities/handleError'
 
-export const processCsv = data => new Promise(async (resolve,reject)=>{
-
-    if(!data) throw new APIError(MISSING_PARAMETER)
-    if(!data.body.csvArray) throw new APIError(MISSING_PARAMETER)
-    // if(!data.body.csvReferenceArray) throw new APIError(MISSING_PARAMETER)
-
-    let {csvArray} = data.body
-    console.log(csvArray)
-    // let csvReferenceArray = data.body.csvReferenceArray
+export const processCsv = data => new Promise(async (resolve,reject) => {
 
     try{
-        
-        await Promise.all(
-            csvArray.map((item,index)=>{
-                if(item.location){
-                    let result = models.Location.findOne({name:item.location}).select('_id');
-                    // item.location=_id
-                    console.log('||||||||',result)
-                }
-            })
-        )
+    if(!data) throw new APIError(MISSING_PARAMETER)
+    if(!data.body.csvArray) throw new APIError(MISSING_PARAMETER)
+    if(!data.body.primaryOwner) throw new APIError(MISSING_PARAMETER)
 
-        // csvArray.map((item,index)=>{
-        //     if(item.location){
-        //         let result = models.Location.findOne({name:item.location}).select('_id');
-        //         // item.location=_id
-        //         console.log('||||||||',result)
-        //     }
-        // })
+    let {csvArray} = data.body
+    let {primaryOwner} = data.body
+
+    console.log(csvArray,'|||||||||',primaryOwner)
+    // let csvReferenceArray = data.body.csvReferenceArray
+    let locationData = await models.Location.find({}).select('name _id')
+    let designationData = await models.Designation.find({}).select('name _id')
+    let sourceData = await models.Source.find({}).select('name _id')
+    let statusData = await models.Status.find({}).select('name _id')
+
+    console.log(locationData,designationData,statusData);
+
+    const findDataFromArray = (dataArray,name) => {
+        let objectId = ''
+        dataArray.forEach((item,index)=>{
+            if(name === item.name) objectId=item._id
+        })
+        return objectId
+    }
+    
+   
+        for (const item of csvArray) {
+            item['contact_owner'] = primaryOwner
+            item.location = findDataFromArray(locationData,item.location)
+            item.designation = findDataFromArray(designationData,item.designation)
+            item.source = findDataFromArray(sourceData,item.source)
+            item.status = item.status ? findDataFromArray(statusData,item.status) : findDataFromArray(statusData,'New')
+        }
         
         console.log(csvArray);
+        
 
-        // models.Lead.insertMany(finalArray,{ordered:true})
-        // .then(data => {
-        //     resolve(data);
-        // })
-        // .catch(err => {
-        //     reject(err);
-        // });
+        models.Lead.insertMany(csvArray,{ordered:true})
+        .then(data => {
+            resolve(data);
+        })
+        .catch(err => {
+            console.log(err)
+            throw new Error(err)
+        });
         
-        resolve(finalArray)
+        // resolve(csvArray)
     }
-        
-    
-        
     catch(err) {
         reject(err)
     }

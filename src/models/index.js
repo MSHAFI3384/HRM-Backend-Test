@@ -19,6 +19,7 @@ import Activity from './Activity'
 import InterviewAction from './InterviewAction'
 import InterviewScore from './InterviewScore'
 import Designation from './Designation'
+import InterviewTimeline from './InterviewTimeline'
 
 export default {
     Lead,
@@ -42,4 +43,5 @@ export default {
     Designation,
     InterviewAction,
     InterviewScore,
+    InterviewTimeline,
 }
