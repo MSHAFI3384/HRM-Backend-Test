@@ -24,7 +24,7 @@ export const processCsv = data => new Promise(async (resolve,reject) => {
 
     const findDataFromArray = (dataArray,name) => {
         let objectId = ''
-        dataArray.forEach((item,index)=>{
+        dataArray.map((item,index)=>{
             if(name === item.name) objectId=item._id
         })
         return objectId
@@ -33,7 +33,8 @@ export const processCsv = data => new Promise(async (resolve,reject) => {
    
         for (const item of csvArray) {
             item['contact_owner'] = primaryOwner
-            item.location = findDataFromArray(locationData,item.location)
+            if(item.location) item["location"] = findDataFromArray(locationData,item.location);
+            // item.location =  findDataFromArray(locationData,item.location)
             item.designation = findDataFromArray(designationData,item.designation)
             item.source = findDataFromArray(sourceData,item.source)
             item.status = item.status ? findDataFromArray(statusData,item.status) : findDataFromArray(statusData,'New')
@@ -47,8 +48,10 @@ export const processCsv = data => new Promise(async (resolve,reject) => {
             resolve(data);
         })
         .catch(err => {
-            console.log(err)
-            throw new Error(err)
+            // console.log(err)
+            // throw new Error(err)
+            reject(err)
+            // throw new APIError(MISSING_PARAMETER)
         });
         
         // resolve(csvArray)
