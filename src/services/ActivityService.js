@@ -1,6 +1,7 @@
 //const Activity = require("../models/Activity");
 import Activity, { ActivitySchema } from "../models/Activity";
 import mongoose from 'mongoose';
+import models from "../models";
 const ActivityCollection = mongoose.model('Activity', ActivitySchema);
 
 module.exports = class ActivityService {
@@ -43,13 +44,28 @@ module.exports = class ActivityService {
 
     static async createMultipleActivity(data) {
         try {
-            const multipleActivityresponse = await ActivityCollection.collection.insertMany(data, { ordered: true });
+            console.log('createMultipleActivity',data)
+            const multipleActivityresponse = await new models.Activity(data).save();
             return multipleActivityresponse;
         } catch (error) {
             console.log(error);
         }
 
     }
+
+    static async createMultipleActivityUsingEdit(data) {
+        try {
+            console.log('createMultipleActivityUsingEdit Service ==',data)
+            let result = await models.Activity.findOneAndUpdate({leadId:data.leadId},{$push:{timeline:data.activity_payload}})
+            // console.log('result using edit =',result);
+            return result
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
     static async getActivitybyId(ActivityId) {
         try {
             const singleActivityResponse = await Activity.findById({ _id: ActivityId });
@@ -61,8 +77,7 @@ module.exports = class ActivityService {
 
     static async getActivityByLeadId(leadId) {
         try {
-            const leadActivityResponse = await Activity.find({ leadId: leadId }).populate(["presaleExecutive", "salesExecutive",
-                "leadId", "userId", "assignedTo", "requestedBy", "handoverBy", "handoverTo", "handoverFrom"]);
+            const leadActivityResponse = await Activity.findOne({ leadId: leadId }).populate("leadId timeline.source timeline.assignedTo timeline.leadStatusFrom timeline.leadStatusTo timeline.userId","-password");
             return leadActivityResponse;
         } catch (error) {
             console.log(`Lead Activity not found. ${error}`)

@@ -11,7 +11,7 @@ const leadSchema = new Schema({
     },
     last_name: {
         type: String,
-        required: true,
+        // required: true,
     },
     email: {
         type: String,
@@ -59,7 +59,14 @@ const leadSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'User',
     },
-    secondary_owners: String,
+    secondary_owners: [
+        {
+            userId:{
+                type:Schema.Types.ObjectId,
+                ref:'User',
+            }
+        }
+    ],
     is_assigned: String,
     linkedin_profile: String,
     current_company: String,

@@ -35,24 +35,25 @@ export const processCsv = data => new Promise(async (resolve,reject) => {
             item['contact_owner'] = primaryOwner
             if(item.location) item["location"] = findDataFromArray(locationData,item.location);
             // item.location =  findDataFromArray(locationData,item.location)
-            item.designation = findDataFromArray(designationData,item.designation)
-            item.source = findDataFromArray(sourceData,item.source)
-            item.status = item.status ? findDataFromArray(statusData,item.status) : findDataFromArray(statusData,'New')
+            if(item.designation) item["designation"] = findDataFromArray(designationData,item.designation)
+            if (item.source) item['source'] = findDataFromArray(sourceData,item.source)
+            item['status'] = item.status ? findDataFromArray(statusData,item.status) : findDataFromArray(statusData,'New')
         }
         
         console.log(csvArray);
         
 
-        models.Lead.insertMany(csvArray,{ordered:true})
-        .then(data => {
-            resolve(data);
-        })
-        .catch(err => {
-            // console.log(err)
-            // throw new Error(err)
-            reject(err)
-            // throw new APIError(MISSING_PARAMETER)
-        });
+        let response = await models.Lead.insertMany(csvArray,{ordered:true})
+        resolve(response)
+        // .then(data => {
+        //     resolve(data);
+        // })
+        // .catch(err => {
+        //     // console.log(err)
+        //     // throw new Error(err)
+        //     reject(err)
+        //     // throw new APIError(MISSING_PARAMETER)
+        // });
         
         // resolve(csvArray)
     }
@@ -105,7 +106,7 @@ export const listAllLeadsService = queries => new Promise(async (resolve, reject
         if (count) {
             leads = await models.Lead.countDocuments(query)
         } else {
-            leads = await models.Lead.find(query, fields, pagination).populate(["source","designation","location","status"]);
+            leads = await models.Lead.find(query, fields, pagination).populate(["source","designation","location","status","contact_owner"]);
         }
         resolve(leads)
     } catch (error) {
@@ -143,9 +144,10 @@ export const leadsDetailsServiceByDynamicPopulate = (lead, keysToBePopulated) =>
     })
 })
 
-export const editExistingLead = updatedLead => new Promise((resplve, reject) => {
+export const editExistingLead = updatedLead => new Promise((resolve, reject) => {
+    console.log('editExistingLead ==',updatedLead);
     models.Lead.findByIdAndUpdate(updatedLead.id, omit(updatedLead, ['id']), { new: true }, (err, doc) => {
         if (err) reject(err)
-        resplve(doc)
+        resolve(doc)
     })
 })

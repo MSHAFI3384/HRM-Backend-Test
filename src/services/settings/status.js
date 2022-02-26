@@ -12,7 +12,7 @@ export const addStatusService = newStatus => new Promise((resolve, reject) => {
 })
 
 export const editExistingStatusService = updatedStatus => new Promise((resolve, reject) => {
-    if (!updatedStatus || !updatedStatus.stageId || !updatedStatus.id)
+    if (!updatedStatus)
         reject({ message: messages.errors.missingParameters })
 
     models.Stage.findById(updatedStatus.stageId, (err) => {

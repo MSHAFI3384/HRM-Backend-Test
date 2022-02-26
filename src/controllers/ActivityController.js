@@ -39,8 +39,9 @@ module.exports = class Activity{
 
    static async apiGetActivityByLeadId(req, res, next){
       try {
-         let id = req.query.id || {};
-         const leadActivity = await ActivityService.getActivityByLeadId(id);
+         let leadId = req.query.leadId || {};
+         console.log('leadId===',leadId);
+         const leadActivity = await ActivityService.getActivityByLeadId(leadId);
          return leadActivity;
          //res.json(Activity);
       } catch (error) {
@@ -63,6 +64,16 @@ module.exports = class Activity{
          //res.status(200).json(createdMultipleActivity)
          return createdMultipleActivity.ops;
       } catch (error) {
+         res.status(500).json({error: error});
+      }
+   }
+
+   static async apiCreateMultipleActivityUsingEdit(req,res,next){
+      try{
+         const createdMultipleActivity = await ActivityService.createMultipleActivityUsingEdit(req)
+         console.log('createdMultipleActivity',createdMultipleActivity)
+         return createdMultipleActivity;
+      }catch (error) {
          res.status(500).json({error: error});
       }
    }
