@@ -61,7 +61,8 @@ module.exports = class ActivityService {
             return result
 
         } catch (error) {
-            console.log(error);
+
+            console.log('createMultipleActivityUsingEdit Error ==',error);
         }
 
     }

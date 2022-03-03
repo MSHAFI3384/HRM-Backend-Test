@@ -1,5 +1,12 @@
 import mongoose, {Schema} from 'mongoose';
 
+const fileArraySchema =new Schema({
+    fileName:String,
+    ETag:String,
+    fileLocation:String,
+    key:String,
+})
+
 const timeline_data = new Schema({
     comment:String,
     next_contact_date:String,
@@ -25,6 +32,7 @@ const timeline_data = new Schema({
         type:String,
         enum:['scheduled','completed']
     },
+    fileArray:[fileArraySchema],
     
 },{timestamps:true})
 

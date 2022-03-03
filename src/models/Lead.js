@@ -1,10 +1,15 @@
 import mongoose, { Schema } from 'mongoose'
 
+const resumeSchema = new Schema({
+    fileName:String,
+    ETag:String,
+    fileLocation:String,
+    key:String,
+})
+
 
 const leadSchema = new Schema({
-    // application_id: {
-    //     type: String,
-    // },
+    resume:resumeSchema,
     first_name: {
         type: String,
         required: true,

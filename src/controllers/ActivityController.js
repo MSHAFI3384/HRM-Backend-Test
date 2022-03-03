@@ -71,7 +71,7 @@ module.exports = class Activity{
    static async apiCreateMultipleActivityUsingEdit(req,res,next){
       try{
          const createdMultipleActivity = await ActivityService.createMultipleActivityUsingEdit(req)
-         console.log('createdMultipleActivity',createdMultipleActivity)
+         console.log('createdMultipleActivity Is Successful%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
          return createdMultipleActivity;
       }catch (error) {
          res.status(500).json({error: error});
@@ -109,3 +109,4 @@ module.exports = class Activity{
    }
 
 }
+

@@ -4,15 +4,17 @@ import { addInterviewTimeline, listInterviewTimeline } from '../services/intervi
 import { verifyToken } from '../utilities/auth'
 import { handle_server_error } from '../utilities/handleError'
 import multer from 'multer';
+import { uploadToS3 } from '../hooks/aws'
+import { forEach } from 'lodash'
 
 const multeroptions = multer();
 
 const router = express.Router()
 
-router.post('/add',verifyToken, multeroptions.array("uploadFile",5) , async (req,res)=>{
+router.post('/add',verifyToken, multeroptions.any("uploadFile") , async (req,res)=>{
     try{
-        let addResult = await addInterviewTimeline(req)
-        // console.log(addResult)
+        // console.log(req.files)
+        let addResult = await addInterviewTimeline(req,res)
         res.status(200).send(addResult)
     }
     catch(err){
