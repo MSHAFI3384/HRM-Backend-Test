@@ -8,7 +8,6 @@ const userSchema = new Schema({
     },
     last_name: {
         type: String,
-        required: true,
     },
     role: {
         type: String,
@@ -17,7 +16,7 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: [true, 'Email is already exists']
+        unique: [true, 'Email already exists']
     },
     password: {
         type: String,
@@ -25,7 +24,8 @@ const userSchema = new Schema({
     },
     phone_number: {
         type: String,
-        required: true
+        required: true,
+        unique: [true, 'Phone already exists']
     },
     location: {
         type:Schema.Types.ObjectId,
@@ -39,7 +39,7 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['active', 'deactivated'],
+        enum: ['active', 'paused'],
         default: 'active'
     },
     profileImage: {

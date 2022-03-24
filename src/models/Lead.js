@@ -21,10 +21,12 @@ const leadSchema = new Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     phone_number: {
         type: String,
         required: true,
+        unique: true,
     },
     alternate_email: {
         type: String,
@@ -47,6 +49,11 @@ const leadSchema = new Schema({
         ref:'Source',
         required:true,
     },
+    contact_owner: {
+        type:Schema.Types.ObjectId,
+        ref:'User',
+        required:true,
+    },
     status: {
         type: Schema.Types.ObjectId,
         ref: 'Status',
@@ -59,10 +66,6 @@ const leadSchema = new Schema({
     interview_score:{
         type:Schema.Types.ObjectId,
         ref:'InterviewScore'
-    },
-    contact_owner: {
-        type:Schema.Types.ObjectId,
-        ref:'User',
     },
     secondary_owners: [
         {

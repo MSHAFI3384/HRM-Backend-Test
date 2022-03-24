@@ -8,7 +8,7 @@ import { uploadToS3 } from '../hooks/aws'
 export const editLead = async (req, res) => {
     try {
         
-        if(req.files.length>0){
+        if(req.files && req.files.length>0){
             let item = req.files[0]
             let fileLink = await uploadToS3(item)
             let object = {
@@ -55,6 +55,7 @@ export const editLead = async (req, res) => {
                     'action': "comment",
                     'userId': userId,
                     'comment': comment,
+                    'createdAt':new Date()
                 };
                 activity_payload.push(comment_activity);
             }
@@ -67,6 +68,7 @@ export const editLead = async (req, res) => {
                     'userId':userId,
                     'leadStatusFrom':statusFrom?statusFrom.status:'',
                     'leadStatusTo':statusTo,
+                    'createdAt':new Date()
                 }
                 activity_payload.push(status_activity)
             }
@@ -76,7 +78,8 @@ export const editLead = async (req, res) => {
             if(contact_owner){
                 let activity_4 = {
                     action:'assignedTo',
-                    'assignedTo':updatedLead.contact_owner
+                    'assignedTo':updatedLead.contact_owner,
+                    'createdAt':new Date()
                 };
                 activity_payload.push(activity_4);
             }

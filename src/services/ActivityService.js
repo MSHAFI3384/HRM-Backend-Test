@@ -56,12 +56,12 @@ module.exports = class ActivityService {
     static async createMultipleActivityUsingEdit(data) {
         try {
             console.log('createMultipleActivityUsingEdit Service ==',data)
-            let result = await models.Activity.findOneAndUpdate({leadId:data.leadId},{$push:{timeline:data.activity_payload}})
+            let result = await models.Activity.findOneAndUpdate({leadId:data.leadId},{$push:{timeline:data.activity_payload}},{new:true})
+            // let result = await new models.Activity({leadId:data.leadId},{$push:{timeline:data.activity_payload}}).save()
             // console.log('result using edit =',result);
             return result
 
         } catch (error) {
-
             console.log('createMultipleActivityUsingEdit Error ==',error);
         }
 

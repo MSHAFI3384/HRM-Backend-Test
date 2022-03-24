@@ -88,7 +88,7 @@ export const searchUser = queries => new Promise(async (resolve, reject) => {
         if (count) {
             users = await models.User.countDocuments(query)
         } else {
-            users = await models.User.find(query, fields, pagination);
+            users = await models.User.find(query, fields, pagination).populate('location');
         }
         resolve(users)
     } catch (error) {
